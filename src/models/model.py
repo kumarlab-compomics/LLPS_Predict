@@ -57,14 +57,12 @@ class TransformerClassifier(nn.Module):
         with torch.no_grad():
             return self.embed_model.tokenize(sequence_list)
     
-    def forward(self, sequence_list: list, output_attentions: bool = False):
+    def forward(self, sequence_list: list):
         """
         Classify list of sequences.
 
         :param sequence_list: list of B protein sequences, maximum length L
         :type sequence_list: List[str]
-        :param output_attentions: whether to output attention weights
-        :type output_attentions: bool
         :return: tuple of the following:
             * logits; shape (B,), B: number of proteins
             * list of list of attention weights, 
@@ -74,32 +72,15 @@ class TransformerClassifier(nn.Module):
         # embedding model
         self.embed_model.eval()
         with torch.no_grad():
-            if output_attentions:
-                embeddings, attention_masks, attention_weights = self.embed_model(
-                    sequence_list, output_attentions=True
-                )
-            else:
-                embeddings, attention_masks = self.embed_model(sequence_list)
+            embeddings, attention_masks = self.embed_model(sequence_list)
         embeddings = embeddings.detach()
         attention_masks = attention_masks.detach()
         # transformer encoder
-        if output_attentions:
-            x, encoder_weights = self.encoder(
-                embeddings, attention_masks, output_attentions=True
-            )
-            for i, m in enumerate(attention_masks):
-                length = sum(m)
-                for w in encoder_weights:
-                    weights = w[i,:,:length,:length]
-                    attention_weights[i] += (weights.detach(),)
-        else:
-            x = self.encoder(embeddings, attention_masks)            
+        x = self.encoder(embeddings, attention_masks)            
         # use the [CLS] token output
         cls_output = x[:, 0, :]  # (B, D)
         # final binary prediction
         logits = self.classifier(cls_output).squeeze(-1)  # (B,)
-        if output_attentions:
-            return logits, attention_weights
         return logits
 
 
