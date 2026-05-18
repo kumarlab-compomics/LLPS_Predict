@@ -47,6 +47,8 @@ batch_size: 16
 # DROPOUT applies to the multi-head self attetion layer and cross attention layer
 # after the language model
 dropout: 0.6
+# THRESHOLD: classification cutoff
+threshold: 0.5
 
 ##########
 # output

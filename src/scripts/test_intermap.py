@@ -5,7 +5,7 @@
 # Usage: 
 # cd LLPS_Predict
 # python -m src.scripts.test_intermap [--config c] [--data_path d] [--score_path s]
-#   [--batch_size n] [--dropout p]
+#   [--batch_size n] [--dropout p] [threshold t]
 #
 # Override config parameters with command line arguments if provided
 ##########
@@ -36,6 +36,7 @@ parser.add_argument('--data_path', type=str)
 parser.add_argument('--score_path', type=str)
 parser.add_argument('--batch_size', type=int)
 parser.add_argument('--dropout', type=float)
+parser.add_argument('--threshold', type=float)
 args = parser.parse_args()
 # parse yaml config file
 with open(args.config, 'r') as f:
@@ -58,6 +59,7 @@ IMG_SIZE = config['img_size']
 N_LAYER = config['n_layer']
 N_HEAD = config['n_head']
 CHECKPOINT_PATH = config['checkpoint_path']
+THRESHOLD = config['threshold']
 
 # configuration
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -106,4 +108,4 @@ df_pred.to_csv(SCORE_PATH, index=False)
 
 
 # Compute Metrics
-classification_metrics(target, pred, threshold=0.5)
+classification_metrics(target, pred, threshold=THRESHOLD)
