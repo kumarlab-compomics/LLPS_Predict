@@ -91,12 +91,12 @@ for i in tqdm(range(len(df))):
     alt_saprot_seq = df.loc[i, ALT_COLUMN2]
     pos_aa = int(df.loc[i, POSITION_COLUMN])
     ref_prob = compute_llps_window(classifier, ref_seq, ref_saprot_seq, pos_aa)
-    # alt_prob = compute_llps_window(classifier, alt_seq, alt_saprot_seq, pos_aa)
-    # mean_prob = compute_llps_mean(classifier, ref_seq, ref_saprot_seq)
-    # mutation score = LLPS(mutation) - LLPS(wild type) / mean LLPS
-    # score = (alt_prob - ref_prob) #/ mean_prob
-    # df.loc[i, 'MutationScore'] = score
-    df.loc[i, 'EnsembleRef'] = ref_prob
+    alt_prob = compute_llps_window(classifier, alt_seq, alt_saprot_seq, pos_aa)
+    # mutation score = LLPS(mutation) - LLPS(wild type)
+    score = alt_prob - ref_prob
+    df.loc[i, 'MutationScore'] = score
+    df.loc[i, 'RefScore'] = ref_prob
+    df.loc[i, 'AltScore'] = alt_prob
 
-df2 = df[['EnsembleRef']]
+df2 = df[['MutationScore', 'RefScore', 'AltScore']]
 df2.to_csv(SCORE_PATH, index=False)

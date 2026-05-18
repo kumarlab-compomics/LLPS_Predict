@@ -71,11 +71,11 @@ classifier.load_state_dict(checkpoint['model'], strict=False)
 
 # compute LLPS score at residue level
 for i in tqdm(range(len(df))):
-    sequence = df[SQN_COLUMN1][i]
-    saprot_sequence = df[SQN_COLUMN2][i]
+    sequence = df.loc[i, SQN_COLUMN1]
+    saprot_sequence = df.loc[i, SQN_COLUMN2]
     prob_list = compute_critical_region(classifier, sequence, saprot_sequence)
     llps = ';'.join([str(round(p, 2)) for p in prob_list])
-    df.loc[i, 'LLPS'] = llps
+    df.loc[i, 'Prediction'] = llps
 
-df2 = df[['LLPS']]
+df2 = df[['Prediction']]
 df2.to_csv(SCORE_PATH, index=False)

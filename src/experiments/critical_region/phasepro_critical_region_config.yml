@@ -42,5 +42,5 @@ dropout: 0.6
 ##########
 # output
 ##########
-checkpoint_path: checkpoints/trained_models/ensemble_baseline_h4_l1.pth
+checkpoint_path: checkpoints/trained_models/ensemble_critical_region_h4_l1.pth
 score_path: src/experiments/critical_region/output/PhaSePro_Critical_Region.csv
