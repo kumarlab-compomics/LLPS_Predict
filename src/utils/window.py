@@ -23,7 +23,6 @@ def get_window(sequence: str, pos_aa: int):
     :return: window at a specific position
     :rtype: str
     """
-    pos_aa = min(max(HALF_WINDOW_SIZE, pos_aa), len(sequence)-HALF_WINDOW_SIZE-1)
     return sequence[
         max(0,(pos_aa-HALF_WINDOW_SIZE)):min((pos_aa+HALF_WINDOW_SIZE+1),len(sequence))
     ]
@@ -42,7 +41,6 @@ def get_saprot_window(sequence: str, pos_aa: int):
     :return: window at a specific position
     :rtype: str
     """
-    pos_aa = min(max(HALF_WINDOW_SIZE, pos_aa), len(sequence)//2-HALF_WINDOW_SIZE-1)
     return sequence[
         max(0,2*(pos_aa-HALF_WINDOW_SIZE)):min(2*(pos_aa+HALF_WINDOW_SIZE+1),len(sequence))
     ]
