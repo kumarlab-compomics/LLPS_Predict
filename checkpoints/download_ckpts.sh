@@ -36,12 +36,15 @@ fi
 ENSEMBLE_URL="https://huggingface.co/mingjiezhao0508/LLPS_Predict/resolve/main/ensemble_baseline_h4_l1.pth"
 ENSEMBLE_DRIVER_URL="https://huggingface.co/mingjiezhao0508/LLPS_Predict/resolve/main/ensemble_driver_baseline_h4_l1.pth"
 ENSEMBLE_PARTNER_URL="https://huggingface.co/mingjiezhao0508/LLPS_Predict/resolve/main/ensemble_partner_baseline_h4_l1.pth"
+ENSEMBLE_CRITICAL_REGION_URL="https://huggingface.co/mingjiezhao0508/LLPS_Predict/resolve/main/ensemble_critical_region_h4_l1.pth"
 
-echo "Downloading first-step ensemble checkpoint..."
+echo "Downloading first-step ensemble PS model checkpoint..."
 $CMD $ENSEMBLE_URL
-echo "Downloading second-step LLPS driver checkpoint..."
+echo "Downloading second-step PS-Self model checkpoint..."
 $CMD $ENSEMBLE_DRIVER_URL
-echo "Downloading second-step LLPS partner checkpoint..."
+echo "Downloading second-step PS-Part model checkpoint..."
 $CMD $ENSEMBLE_PARTNER_URL
+echo "Downloading critical region model checkpoint..."
+$CMD $ENSEMBLE_CRITICAL_REGION_URL
 
 echo "All checkpoints are downloaded successfully."
