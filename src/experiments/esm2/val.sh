@@ -15,16 +15,16 @@ done
 # change directory to project main directory
 cd $SCRIPT_DIR
 
-# create output and logging directories if not exist
-OUTPUT_DIR="$EXPERIMENT_DIR/output"
-LOGGING_DIR="$EXPERIMENT_DIR/logging"
-
-if [ ! -d "$OUTPUT_DIR" ]; then
-    mkdir -p "$OUTPUT_DIR"
+# create logging directory
+LOGGING_DIR="${EXPERIMENT_DIR}/logging"
+if [ ! -d $LOGGING_DIR ]; then
+    mkdir $LOGGING_DIR
 fi
 
-if [ ! -d "$LOGGING_DIR" ]; then
-    mkdir -p "$LOGGING_DIR"
+# create score directory
+SCORE_DIR="${EXPERIMENT_DIR}/output"
+if [ ! -d $SCORE_DIR ]; then
+    mkdir $SCORE_DIR
 fi
 
 # run script
