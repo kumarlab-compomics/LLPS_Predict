@@ -160,6 +160,28 @@ def compute_llps_window(
     return prob
 
 
+def compute_llps(model, sequence: str, saprot_sequence: str):
+    """
+    Compute LLPS score for a given sequence. 
+    Gives an overall score for a protein.
+
+    :param model: LLPS prediction model
+    :type model: torch.nn.module
+    :param sequence: input protein sequence
+    :type sequence: str
+    :param saprot_sequence: input SaProt sequence
+    :type saprot_sequence: str
+    :return: LLPS score
+    :rtype: float
+    """
+    model.eval()
+    with torch.no_grad():
+        prob = sigmoid(
+            model([sequence], [saprot_sequence])
+        ).item()
+    return prob
+
+
 def compute_llps_mean(model, sequence: str, saprot_sequence: str):
     """
     Compute mean LLPS score over all windows across a sequence. 

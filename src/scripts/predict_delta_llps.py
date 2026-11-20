@@ -13,7 +13,7 @@
 import torch
 from src.models.model_ensemble import EnsembleClassifier
 # moving window helper function
-from src.utils.window import compute_llps_window
+from src.utils.window import compute_llps, compute_llps_window
 from tqdm import tqdm
 # config parameters
 import yaml
@@ -61,6 +61,7 @@ CHECKPOINT_PATH = config['checkpoint_path']
 # configuration
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 DROPOUT = config['dropout']
+MODE = config['mode']
 
 
 # input
@@ -90,8 +91,12 @@ for i in tqdm(range(len(df))):
     alt_seq = df.loc[i, ALT_COLUMN1]
     alt_saprot_seq = df.loc[i, ALT_COLUMN2]
     pos_aa = int(df.loc[i, POSITION_COLUMN])
-    ref_prob = compute_llps_window(classifier, ref_seq, ref_saprot_seq, pos_aa)
-    alt_prob = compute_llps_window(classifier, alt_seq, alt_saprot_seq, pos_aa)
+    if MODE == "protein_level":
+        ref_prob = compute_llps(classifier, ref_seq, ref_saprot_seq)
+        alt_prob = compute_llps(classifier, alt_seq, alt_saprot_seq)
+    else:
+        ref_prob = compute_llps_window(classifier, ref_seq, ref_saprot_seq, pos_aa-1)
+        alt_prob = compute_llps_window(classifier, alt_seq, alt_saprot_seq, pos_aa-1)
     # mutation score = LLPS(mutation) - LLPS(wild type)
     score = alt_prob - ref_prob
     df.loc[i, 'MutationScore'] = score
