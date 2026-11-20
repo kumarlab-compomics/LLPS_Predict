@@ -4,10 +4,10 @@
 ##########
 # dataset
 ##########
-data_path: data/test/driver_vs_partner_disjoint_test.csv
+data_path: data/test/driver_vs_partner_test.csv
 sqn_column1: Sequence
 sqn_column2: SaProtSeq
-label_column: Partner
+label_column: PS_Part
 
 ##########
 # model

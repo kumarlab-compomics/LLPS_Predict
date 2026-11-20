@@ -30,4 +30,6 @@ fi
 # run script
 python -m src.scripts.predict_delta_llps \
     --config $EXPERIMENT_DIR/denovo-db_1.8_not_ssc2_delta_llps_config.yml \
-    > $EXPERIMENT_DIR/logging/denovo-db_1.8_not_ssc2_delta_llps.log
+    --data_path data/denovo_db/denovo_db_not_ssc_mutations_full.csv \
+    --score_path $EXPERIMENT_DIR/output/denovo_db_not_ssc_mutations_full_delta_llps.csv \
+    > $EXPERIMENT_DIR/logging/denovo_db_not_ssc_mutations_full_delta_llps.log

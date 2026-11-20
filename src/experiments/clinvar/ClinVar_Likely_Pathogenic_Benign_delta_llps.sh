@@ -30,6 +30,6 @@ fi
 # run script
 python -m src.scripts.predict_delta_llps \
     --config $EXPERIMENT_DIR/ClinVar_Likely_Pathogenic_Benign_delta_llps_config.yml \
-    --data_path data/clinvar/ClinVar_Likely_Pathogenic_Benign_Top_Mutations_Unique.csv \
-    --score_path $EXPERIMENT_DIR/output/ClinVar_Likely_Pathogenic_Benign_delta_llps.csv \
-    > $EXPERIMENT_DIR/logging/ClinVar_Likely_Pathogenic_Benign_delta_llps.log
+    --data_path data/clinvar/ClinVar_mutations_full.csv \
+    --score_path $EXPERIMENT_DIR/output/ClinVar_mutations_full_delta_llps.csv \
+    > $EXPERIMENT_DIR/logging/ClinVar_mutations_full_delta_llps.log

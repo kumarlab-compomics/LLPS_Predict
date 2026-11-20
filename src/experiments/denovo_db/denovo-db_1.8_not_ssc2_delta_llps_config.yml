@@ -4,7 +4,7 @@
 ##########
 # dataset
 ##########
-data_path: data/denovo_db/denovo-db_1.8_not_ssc2.csv
+data_path: data/denovo_db/denovo_db_not_ssc_mutations_full.csv
 ref_column1: RefSequence
 ref_column2: RefSaProtSeq
 alt_column1: AltSequence
@@ -41,9 +41,11 @@ feedforward_dim: 1280
 # DROPOUT applies to the multi-head self attetion layer and cross attention layer
 # after the language model
 dropout: 0.6
+# mode options: protein_level; region_level
+mode: protein_level
 
 ##########
 # output
 ##########
 checkpoint_path: checkpoints/trained_models/ensemble_critical_region_h4_l1.pth
-score_path: src/experiments/denovo_db/output/denovo-db_1.8_not_ssc2_delta_llps.csv
+score_path: src/experiments/denovo_db/output/denovo_db_not_ssc_mutations_full_delta_llps.csv

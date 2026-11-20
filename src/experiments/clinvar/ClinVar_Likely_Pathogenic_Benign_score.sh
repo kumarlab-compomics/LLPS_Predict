@@ -30,6 +30,6 @@ fi
 # run script
 python -m src.scripts.test_ensemble \
     --config $EXPERIMENT_DIR/ClinVar_Likely_Pathogenic_Benign_score_config.yml \
-    --data_path data/clinvar/ClinVar_Likely_Pathogenic_Benign_Top_Genes_Database.csv \
-    --score_path $EXPERIMENT_DIR/output/ClinVar_Likely_Pathogenic_Benign_score.csv \
-    > $EXPERIMENT_DIR/logging/ClinVar_Likely_Pathogenic_Benign_score.log
+    --data_path data/clinvar/ClinVar_mutations_full.csv \
+    --score_path $EXPERIMENT_DIR/output/ClinVar_mutations_full_score.csv \
+    > $EXPERIMENT_DIR/logging/ClinVar_mutations_full_score.log

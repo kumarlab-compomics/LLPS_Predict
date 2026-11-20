@@ -30,6 +30,6 @@ fi
 # run script
 python -m src.scripts.test_ensemble \
     --config $EXPERIMENT_DIR/denovo-db_1.8_ssc2_score_config.yml \
-    --data_path data/denovo_db/denovo-db_1.8_ssc2.csv \
-    --score_path $EXPERIMENT_DIR/output/denovo-db_1.8_ssc2_score.csv \
-    > $EXPERIMENT_DIR/logging/denovo-db_1.8_ssc2_score.log
+    --data_path data/denovo_db/denovo_db_ssc_mutations_full.csv \
+    --score_path $EXPERIMENT_DIR/output/denovo_db_ssc_mutations_full_score.csv \
+    > $EXPERIMENT_DIR/logging/denovo_db_ssc_mutations_full_score.log

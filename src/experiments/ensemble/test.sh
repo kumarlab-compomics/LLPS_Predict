@@ -31,6 +31,6 @@ fi
 # run script
 python -m src.scripts.test_ensemble \
     --config $EXPERIMENT_DIR/test_config.yml \
-    --data_path data/test/llps_vs_non_llps_disjoint_test.csv \
+    --data_path data/test/llps_vs_non_llps_test.csv \
     --score_path $EXPERIMENT_DIR/output/ensemble_baseline_h4_l1_test_score.csv \
     > $EXPERIMENT_DIR/logging/ensemble_baseline_h4_l1_test.log

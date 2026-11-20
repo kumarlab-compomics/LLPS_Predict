@@ -4,7 +4,7 @@
 ##########
 # dataset
 ##########
-data_path: data/clinvar/ClinVar_Likely_Pathogenic_Benign_Top_Genes_Database.csv
+data_path: data/clinvar/ClinVar_mutations_full.csv
 sqn_column1: Sequence
 sqn_column2: SaProtSeq
 label_column: Label
@@ -45,4 +45,4 @@ dropout: 0.6
 # output
 ##########
 checkpoint_path: checkpoints/trained_models/ensemble_baseline_h4_l1.pth
-score_path: src/experiments/clinvar/output/ClinVar_Likely_Pathogenic_Benign_score.csv
+score_path: src/experiments/clinvar/output/ClinVar_mutations_full_score.csv
