@@ -35,7 +35,8 @@ Some foundation models may be cached in `foundation_models` while running subseq
 To use as a library, refer to [tutorial.ipynb](./src/notebooks/tutorial.ipynb)
 It illustrates how to:
 - predict LLPS propensity scores on the protein level
-- predict LLPS propensity scores on the residue level and identify critical regions
+- predict LLPS propensity profile and identify critical regions
+- predict mutation effect on LLPS propensity (Delta LLPS)
 - perform mutagenesis analysis
 
 ## Project Structure
