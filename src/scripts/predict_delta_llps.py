@@ -13,7 +13,7 @@
 import torch
 from src.models.model_ensemble import EnsembleClassifier
 # moving window helper function
-from src.utils.window import compute_llps, compute_llps_window
+from src.utils.window import compute_llps, compute_llps_window, compute_llps_mean
 from tqdm import tqdm
 # config parameters
 import yaml
@@ -22,16 +22,39 @@ import argparse
 import pandas as pd
 
 
+# default parameters
+DEFAULTS = {
+    'ref_column1': 'RefSequence',
+    'ref_column2': 'RefSaProtSeq',
+    'alt_column1': 'AltSequence',
+    'alt_column2': 'AltSaProtSeq',
+    'position_column': 'Position',
+    'sqn_embed_model1': 'esm2_650m',
+    'sqn_embed_model2': 'saprot_650m',
+    'sqn_embed_load_local': True,
+    'sqn_embed_dim': 1280,
+    'n_layer': 1,
+    'n_head': 4,
+    'feedforward_dim': 1280,
+    'dropout': 0.6,
+    'mode': 'protein_level',
+    'checkpoint_path': 'checkpoints/trained_models/ensemble_baseline_h4_l1.pth',
+}
+
 # command line parameters
 parser = argparse.ArgumentParser()
-parser.add_argument('--config', type=str, required=True)
+parser.add_argument('--config', type=str)
 parser.add_argument('--data_path', type=str)
 parser.add_argument('--score_path', type=str)
 parser.add_argument('--dropout', type=float)
 args = parser.parse_args()
-# parse yaml config file
-with open(args.config, 'r') as f:
-    config = yaml.safe_load(f)
+
+config = dict(DEFAULTS)
+# override with config parameters if provided
+if args.config is not None:
+    with open(args.config, 'r') as f:
+        loaded = yaml.safe_load(f) or {}
+    config.update(loaded)
 # override with command line arguments if provided
 args_dict = {
     k: v for k, v in vars(args).items()
@@ -92,11 +115,16 @@ for i in tqdm(range(len(df))):
     alt_saprot_seq = df.loc[i, ALT_COLUMN2]
     pos_aa = int(df.loc[i, POSITION_COLUMN])
     if MODE == "protein_level":
-        ref_prob = compute_llps(classifier, ref_seq, ref_saprot_seq)
-        alt_prob = compute_llps(classifier, alt_seq, alt_saprot_seq)
-    else:
+        scale = 100
+        ref_prob = compute_llps(classifier, ref_seq, ref_saprot_seq) * scale
+        alt_prob = compute_llps(classifier, alt_seq, alt_saprot_seq) * scale
+    elif MODE == "region_level_fast":
         ref_prob = compute_llps_window(classifier, ref_seq, ref_saprot_seq, pos_aa-1)
         alt_prob = compute_llps_window(classifier, alt_seq, alt_saprot_seq, pos_aa-1)
+    else: # MODE == "region_level"
+        scale = len(ref_seq)
+        ref_prob = compute_llps_mean(classifier, ref_seq, ref_saprot_seq) * scale
+        alt_prob = compute_llps_mean(classifier, alt_seq, alt_saprot_seq) * scale
     # mutation score = LLPS(mutation) - LLPS(wild type)
     score = alt_prob - ref_prob
     df.loc[i, 'MutationScore'] = score

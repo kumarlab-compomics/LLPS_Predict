@@ -11,16 +11,35 @@ import argparse
 import pandas as pd
 
 
+# default parameters
+DEFAULTS = {
+    'seq_column1': 'Sequence',
+    'seq_column2': 'SaProtSeq',
+    'sqn_embed_model1': 'esm2_650m',
+    'sqn_embed_model2': 'saprot_650m',
+    'sqn_embed_load_local': True,
+    'sqn_embed_dim': 1280,
+    'n_layer': 1,
+    'n_head': 4,
+    'feedforward_dim': 1280,
+    'dropout': 0.6,
+    'checkpoint_path': 'checkpoints/trained_models/ensemble_critical_region_h4_l1.pth',
+}
+
 # command line parameters
 parser = argparse.ArgumentParser()
-parser.add_argument('--config', type=str, required=True)
+parser.add_argument('--config', type=str)
 parser.add_argument('--data_path', type=str)
 parser.add_argument('--score_path', type=str)
 parser.add_argument('--dropout', type=float)
 args = parser.parse_args()
-# parse yaml config file
-with open(args.config, 'r') as f:
-    config = yaml.safe_load(f)
+
+config = dict(DEFAULTS)
+# override with config parameters if provided
+if args.config is not None:
+    with open(args.config, 'r') as f:
+        loaded = yaml.safe_load(f) or {}
+    config.update(loaded)
 # override with command line arguments if provided
 args_dict = {
     k: v for k, v in vars(args).items()
